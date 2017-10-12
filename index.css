@@ -1,0 +1,36 @@
+body {
+  font: 10px sans-serif;
+}
+
+.y.axisRight text {
+    fill: orange;
+}
+.y.axisLeft text {
+    fill: red;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+}
+
+.bar1 {
+  fill: steelblue;
+}
+
+.bar2 {
+  fill: orange;
+}
+
+.bar3 {
+  fill: grey;
+}
+
+.x.axis path {
+  display: none;
+}
+
+#active {
+  fill:red;
+}
