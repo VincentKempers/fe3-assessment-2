@@ -16,11 +16,11 @@ var width = 600 - margin.left - margin.right,
 
 // svg aanmaken met de width en height aangeven.
 var svg = d3.select('svg')
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("class", "graph")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+  .append('g')
+    .attr('class', 'graph')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
 // x, y0, y1 zijn de assen die ik aanmaak voor de grafiek.
 var x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
@@ -50,12 +50,13 @@ function onload(err, data) {
   var deleteFooter = data.indexOf('Centraal') -3;
   // data voor substring alles tussen de header en de footer laat ik staan en de rest haal ik weg.
   data = data.substring(deleteHeader, deleteFooter).trim();
-  // haal de '*' weg van "2015" om dit bruikbaar te maken.
+  // haal de '*' weg van '2015' om dit bruikbaar te maken.
   data = data.replace('*', '');
-  // parse dit naar period.
+  // parse dit naar naar csv en zet dit in de variabel period.
   var period = d3.csvParseRows(data, map);
 
 // functie map aanmaken om vervolgens dit te gebruiken voor period.
+// hier plaatst ik de data die ik wil gebruiken op de juiste plek.
 
   function map(placeData) {
     return {
@@ -66,15 +67,17 @@ function onload(err, data) {
     }
   }
 
-  console.log(period);
+// Hier teken map en max ik de x en Y as zodat ik zo kan tekenen.
   x.domain(period.map(function(d) { return d.year;}  ));
   y0.domain([0, d3.max(period, function(d) { return d.peoplepayback;} )]);
 
+// hier teken ik de x as
   svg.append('g')
   .attr('class', 'x axis')
   .attr(`transform`, `translate(0,${height})`)
   .call(xAxis);
 
+// hier teken ik de linker y as
   svg.append('g')
   .attr('class','y axis axisLeft')
   .attr('transform','translate(0,0)')
@@ -85,13 +88,29 @@ function onload(err, data) {
   .style('text-anchor', 'end')
   .text('Million (in euro)');
 
+// hier teken ik de rechter y as
+ svg.append('g')
+    .attr('class', 'y axis axisRight')
+    .attr('transform', 'translate(' + (width) + ',0)')
+    .call(yAxisRight)
+  .append('text')
+    .attr('y', 6)
+    .attr('dy', '-2em')
+    .attr('dx', '2em')
+    .style('text-anchor', 'end')
+    .text('Million (in euro)');
+
+/*
+  we selecteren alle bars en zetten daar de data in. Zet de juiste waardes bij het juiste jaar
+  en dan de y vullen we aan met onze data!
+  Vervolgens genereren we de hoogte met onze data. a.d.h.v. de hoogte variabelen
+*/
 
   bars = group;
   bars.selectAll('.bar')
     .data(period)
     .enter()
     .append('rect')
-    .style('fill', 'red')
     .attr('class', 'bar1')
     .attr('x', function(d) { 
       return x(d.year); 
@@ -99,10 +118,16 @@ function onload(err, data) {
     .attr('y', function(d) { 
       return y0(d.peoplepayback); 
     })
-    .attr('width', x.bandwidth()/3)
+    .attr('width', x.bandwidth()/2)
     .attr('height', function(d,i,j) {
       return height - y0(d.peoplepayback)
     });
+
+/*
+  we selecteren alle bars en geven de class bar2 en zetten daar de data in. Zet de juiste waardes bij het juiste jaar
+  en dan de y1 (tweede y) vullen we aan met onze data!
+  Vervolgens genereren we de hoogte met onze data. a.d.h.v. de hoogte variabelen
+*/
 
     bars.selectAll('.bar')
     .data(period)
@@ -115,26 +140,82 @@ function onload(err, data) {
     .attr('y', function(d) { 
       return y1(d.revenue); 
     })
-    .attr('width', x.bandwidth()/3)
+    .attr('width', x.bandwidth()/2)
     .attr('height', function(d,i,j) {
       return height - y1(d.revenue)
     });
 
 
+
+    /*
+    Start Animaties!!!
+    Get the interactions going!
+    */
+
+    // maak een functie genaamd update
     function update() {
+
+      svg.append('g')
+    .attr('class', 'y axis axisRight')
+    .attr('transform', 'translate(' + (width) + ',0)')
+    .call(yAxisRight)
+  .append('text')
+  .style('fill', 'lightgrey')
+    .attr('y', 6)
+    .attr('dy', '-2em')
+    .attr('dx', '2em')
+    .style('text-anchor', 'end')
+    .text('Million (in euro)');
+      // selectbars selecteer ik alle bars en vul het met een kleur
       var selectBars = bars.selectAll('.bar')
-      .data(period).enter().selectAll('.bar2').style('fill','purple')
+      .data(period).enter().selectAll('.bar2').style('fill','lightgrey')
+      .attr('x', function(d) { 
+        // ik vul de x as in om alles de juiste plek te zetten.
+      return x(d.year); 
+    }).attr('y', function(d) { 
+      // ik vul de y as in om alles de juiste plek te zetten.
+      return y1(d.payoff); 
+      // ik maak de bars wat dunner na dat je er op klikt want dan kan je de rode bars nog zien.
+    }).attr('width', x.bandwidth() / 3)
+    .attr('height', function(d,i,j) {
+      // nieuwe data inladen.
+      return height - y1(d.payoff)
+    });
+
+  // luisteren naar een click en dan update functie uitvoeren met de click
+    selectBars.enter()
+    .on('click', function(e, i){
+      update();
+    });
+
+    // EXECUTE. dit verwijdert de data en plaatst de nieuwe data in
+    selectBars.exit().remove();
+
+    };
+    // hier selecteer ik de button en als die geclicked wordt dan wordt de update uitgevoerd
+   d3.select('#payoff').on('click', function(e){
+  update();
+});
+
+   /*
+    functie newUpdate  zet de bar weer terug naar revenue. Om de bar van revenue weer te laten tonen maken we een nieuwe button om die te laten zien.
+    Die doen we letterlijk op hetzelfde manier zoals update().
+   */
+
+    function newUpdate() {
+      var selectBars = bars.selectAll('.bar')
+      .data(period).enter().selectAll('.bar2').style('fill','orange')
       .attr('x', function(d) { 
       return x(d.year); 
     }).attr('y', function(d) { 
-      return y0(d.payoff); 
-    }).attr('width', x.bandwidth()/5)
+      return y1(d.revenue); 
+    }).attr('width', x.bandwidth()/3)
     .attr('height', function(d,i,j) {
-      return height - y0(d.payoff)
+      return height - y1(d.revenue)
     });
 
     selectBars.enter()
-    .on("click", function(e, i){
+    .on('click', function(e, i){
       update();
     });
 
@@ -142,77 +223,93 @@ function onload(err, data) {
 
     };
 
-   d3.select("#add-btn").on("click", function(e){
-  update();
+   d3.select('#peoplepayback').on('click', function(e){
+  newUpdate();
 });
 
-    
+// d3.select selecteert de input tag in het document en verandert die met de functie change
+    d3.select('input').on('change', change);
 
-
-  
-
-    /*
-    Start Animaties!!!
-    Get the interactions going!
-      
-    */
-
-    d3.select("input").on("change", change);
-
+// hier maken we een time out met een functie die de checkbox 'vrijwel' direct op unchecked zet.
   var sortTimeout = setTimeout(function() {
-    d3.select("input").property("checked", false).each(change);
+    d3.select('input').property('checked', false).each(change);
   }, 2000);
 
+// Hier is de functie change hier gebeurt al het magie.
   function change() {
     clearTimeout(sortTimeout);
 
-    // Copy-on-write since tweens are evaluated after a delay.
+/*
+  Hier wordt een variabelen aangemaakt die de data sorteert, van hoog naar laag.
+  Hij checked of hij 'checked' is en als hij dat is stopt hij de ascending data erin, zo niet dan wordt de warrige data erin gestopt.
+*/
     var x0 = x.domain(period.sort(this.checked
-        ? function(a, b) { return b.peoplepayback - a.peoplepayback; }
-        : function(a, b) { return d3.ascending(a.year, b.year); })
-        .map(function(d) { return d.year; }))
+        ? function(a, b) { 
+          return b.peoplepayback - a.peoplepayback; 
+        }
+        : function(a, b) { 
+          return d3.ascending(a.year, b.year); 
+        })
+        .map(function(d) { 
+          return d.year; 
+        }))
         .copy();
 
+  /*
+   Hier wordt een variabelen aangemaakt die de data sorteert, van hoog naar laag.
+   Hij checked of hij 'checked' is en als hij dat is stopt hij de ascending data erin, zo niet dan wordt de warrige data erin gestopt.
+   Dit geld dan voor de tweede set aan bars
+ */
       var x1 = x.domain(period.sort(this.checked
-        ? function(a, b) { return b.revenue - a.revenue; }
-        : function(a, b) { return d3.ascending(a.year, b.year); })
-        .map(function(d) { return d.year; }))
+        ? function(a, b) { 
+          return b.revenue - a.revenue; 
+        }
+        : function(a, b) { 
+          return d3.ascending(a.year, b.year); 
+        })
+        .map(function(d) { 
+          return d.year; 
+        }))
         .copy();
 
-    svg.selectAll(".bar1")
+
+  //  Selecteer alle bars en sorteer die!
+    svg.selectAll('.bar1')
         .sort(function(a, b) { 
           return x0(a.year) - x0(b.year); 
         });
 
-   svg.selectAll(".bar2")
+//  Selecteer alle bars en sorteer die!
+   svg.selectAll('.bar2')
         .sort(function(a, b) { 
           return x1(a.year) - x1(b.year); 
         });
-
+/*
+ we maken een variabelen aan die de transitie en de duratie meekrijgt. Daarnaast wordt er een delay meegegeven met de i waarde.
+ De i waarde zijn de bars en ook de interval dus er gaat 1 bar per keer en we wachten op elke bar 50 milliseconden.
+*/
     var transition = svg.transition().duration(750),
         delay = function(d, i) { return i * 50; };
 
-    transition.selectAll(".bar1")
+// die transitie die we net gemaakt hebben gebeurt nu op elke bar.
+    transition.selectAll('.bar1')
         .delay(delay)
-        .attr("x", function(d) { 
+        .attr('x', function(d) { 
       return x0(d.year); 
     });
-
-    transition.selectAll(".bar2")
+// die transitie die we net gemaakt hebben gebeurt nu op elke bar.
+    transition.selectAll('.bar2')
         .delay(delay)
-        .attr("x", function(d) { 
+        .attr('x', function(d) { 
       return x1(d.year) + x.bandwidth() / 2; 
     });
 
-
-    transition.select(".x.axis")
+// we moeten wel de juiste as hebben voor de animatie omdat we spaties in onze class hebben moeten we met '.' puntjes de spaties vervangen of beter gezegd beide classes benoemen.
+    transition.select('.x.axis')
         .call(xAxis)
-      .selectAll("g")
+      .selectAll('g')
         .delay(delay);
   }
-
-
-
 };
 
 

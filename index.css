@@ -3,7 +3,7 @@ body {
 }
 
 .y.axisRight text {
-    fill: orange;
+    fill: black;
 }
 .y.axisLeft text {
     fill: red;
