@@ -10,16 +10,16 @@ This assessment is to work on the interaction of a chart that uses dirty data. T
 
 ### Did I Do That!?
 
--		I refactored the code of [@liufly](https://github.com/liufly/) of his [.v3 barchart without license.](https://github.com/liufly/Dual-scale-D3-Bar-Chart). From v3 to v4.
--		I used the sorted code from [barchart](https://bl.ocks.org/mbostock/3885705) by [Mike Bostock](https://github.com/mbostock). To rework it a little bit for the barchart.
+*		I refactored the code of [@liufly](https://github.com/liufly/) of his [.v3 barchart without license.](https://github.com/liufly/Dual-scale-D3-Bar-Chart). From v3 to v4.
+*		I used the sorted code from [barchart](https://bl.ocks.org/mbostock/3885705) by [Mike Bostock](https://github.com/mbostock). To rework it a little bit for the barchart.
 
--		I started out to clean the data so that it is readable and usable data used from: [from the Central Bureau of Statistics. Eductaion; Goverment spending to education with indication of CBS/OESO](http://statline.cbs.nl/statweb/publication/?vw=t&dm=slnl&pa=80393ned&d1=10,12-13,16-18&d2=4,7&d3=a&hd=150105-1327&hdr=g1,t&stb=g2). 
+*		I started out to clean the data so that it is readable and usable data used from: [from the Central Bureau of Statistics. Eductaion; Goverment spending to education with indication of CBS/OESO](http://statline.cbs.nl/statweb/publication/?vw=t&dm=slnl&pa=80393ned&d1=10,12-13,16-18&d2=4,7&d3=a&hd=150105-1327&hdr=g1,t&stb=g2). 
 
--		Then i made the data fit i used the data from 2010 - 2015 to delete the data that i didn't need. I already refactored the v3 to v4 and made variables dynamic so i could just paste it and fix the little parts.
+*		Then i made the data fit i used the data from 2010 - 2015 to delete the data that i didn't need. I already refactored the v3 to v4 and made variables dynamic so i could just paste it and fix the little parts.
 
--		When the sorting worked i created a `update()` function for every click on the button you change the bar with it's values that goes for color, values en and axis. 
+*		When the sorting worked i created a `update()` function for every click on the button you change the bar with it's values that goes for color, values en and axis. 
 
--		After that mostly styled my bars in Javascript. And the background and well everything else in CSS
+*		After that mostly styled my bars in Javascript. And the background and well everything else in CSS
 
 ### Features
 
