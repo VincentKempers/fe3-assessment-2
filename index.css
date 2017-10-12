@@ -1,17 +1,52 @@
 body {
   font: 10px sans-serif;
-  /*background-color: #0E101B;*/
+  background-color: #0E101B;
+}
+
+div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+label {
+	font-size: 2em;
+	color:white;
+}
+
+
+#peoplepayback {
+	background-color: #E6C136;
+	border: none;
+	padding: 1em;
+}
+
+#payoff {
+	background-color: #D4642C;
+	border: none;
+	padding: 1em;
+}
+
+svg {
+	display: block;
+	margin: 0 auto;
+	margin-top: 5em;
+}
+
+
+.x.axis text {
+	fill:white;
 }
 
 .y.axisRight text {
-    fill: black;
+    fill: white;
 }
-.y.axisRight .tick {
+.y.axisRight .tick text {
   fill:white;
 }
 
-.y.axisLeft text {
-    fill: black;
+.y.axisLeft .tick text {
+    fill: white;
 }
 
 .axis path,

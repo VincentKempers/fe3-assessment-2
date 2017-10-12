@@ -4,14 +4,14 @@
 
 // margins aangeven
 var margin = {
-  top: 80,
-  right: 80,
-  bottom: 80,
-  left: 80
+  top: 40,
+  right: 30,
+  bottom: 20,
+  left: 70
 };
 
 // width and height meegeven
-var width = 600 - margin.left - margin.right,
+var width = 800 - margin.left - margin.right,
  height = 400 - margin.top - margin.bottom;
 
 // svg aanmaken met de width en height aangeven.
@@ -83,7 +83,7 @@ function onload(err, data) {
   .attr('transform','translate(0,0)')
   .call(yAxisLeft)
   .append('text')
-  .style('fill','steelblue')
+  .style('fill','#0065E3')
   .attr('y', 6)
   .attr('dy', '-2em')
   .style('text-anchor', 'end')
@@ -98,6 +98,7 @@ function onload(err, data) {
     .attr('y', 6)
     .attr('dy', '-2em')
     .attr('dx', '2em')
+    .style('fill', '#E6C136')
     .style('text-anchor', 'end')
     .text('Million (in euro)');
 
@@ -113,7 +114,7 @@ function onload(err, data) {
     .enter()
     .append('rect')
     .attr('class', 'bar1')
-    .attr('fill', 'steelblue')
+    .attr('fill', '#0065E3')
     .attr('x', function(d) { 
       return x(d.year); 
     })
@@ -136,7 +137,7 @@ function onload(err, data) {
     .enter()
     .append('rect')
     .attr('class', 'bar2')
-    .attr('fill', 'orange')
+    .attr('fill', '#E6C136')
     .attr('x', function(d) { 
       return x(d.year); 
     })
@@ -160,7 +161,7 @@ function onload(err, data) {
 
     selectYAxisRight = d3.select('.y.axis.axisRight')
   .append('text')
-  .style('fill', 'lightgrey')
+  .style('fill', '#D4642C')
     .attr('y', 6)
     .attr('dy', '-2em')
     .attr('dx', '2em')
@@ -169,7 +170,7 @@ function onload(err, data) {
 
       // selectbars selecteer ik alle bars en vul het met een kleur
       var selectBars = bars.selectAll('.bar')
-      .data(period).enter().selectAll('.bar2').style('fill','lightgrey')
+      .data(period).enter().selectAll('.bar2').style('fill','#D4642C')
       .attr('x', function(d) { 
         // ik vul de x as in om alles de juiste plek te zetten.
       return x(d.year); 
@@ -207,7 +208,7 @@ function onload(err, data) {
 
   selectYAxisRight = d3.select('.y.axis.axisRight')
   .append('text')
-  .style('fill', 'orange')
+  .style('fill', '#E6C136')
     .attr('y', 6)
     .attr('dy', '-2em')
     .attr('dx', '2em')
@@ -215,7 +216,7 @@ function onload(err, data) {
     .text('Million (in euro)');
 
       var selectBars = bars.selectAll('.bar')
-      .data(period).enter().selectAll('.bar2').style('fill','orange')
+      .data(period).enter().selectAll('.bar2').style('fill','#E6C136')
       .attr('x', function(d) { 
       return x(d.year); 
     }).attr('y', function(d) { 
