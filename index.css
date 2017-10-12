@@ -27,6 +27,13 @@ label {
 	padding: 1em;
 }
 
+h1 {
+	display: flex;
+	justify-content: center;
+	color:white;
+	margin-top: 4em;
+}
+
 svg {
 	display: block;
 	margin: 0 auto;
