@@ -83,6 +83,7 @@ function onload(err, data) {
   .attr('transform','translate(0,0)')
   .call(yAxisLeft)
   .append('text')
+  .style('fill','steelblue')
   .attr('y', 6)
   .attr('dy', '-2em')
   .style('text-anchor', 'end')
@@ -112,6 +113,7 @@ function onload(err, data) {
     .enter()
     .append('rect')
     .attr('class', 'bar1')
+    .attr('fill', 'steelblue')
     .attr('x', function(d) { 
       return x(d.year); 
     })
@@ -134,6 +136,7 @@ function onload(err, data) {
     .enter()
     .append('rect')
     .attr('class', 'bar2')
+    .attr('fill', 'orange')
     .attr('x', function(d) { 
       return x(d.year); 
     })
@@ -155,10 +158,7 @@ function onload(err, data) {
     // maak een functie genaamd update
     function update() {
 
-      svg.append('g')
-    .attr('class', 'y axis axisRight')
-    .attr('transform', 'translate(' + (width) + ',0)')
-    .call(yAxisRight)
+    selectYAxisRight = d3.select('.y.axis.axisRight')
   .append('text')
   .style('fill', 'lightgrey')
     .attr('y', 6)
@@ -166,6 +166,7 @@ function onload(err, data) {
     .attr('dx', '2em')
     .style('text-anchor', 'end')
     .text('Million (in euro)');
+
       // selectbars selecteer ik alle bars en vul het met een kleur
       var selectBars = bars.selectAll('.bar')
       .data(period).enter().selectAll('.bar2').style('fill','lightgrey')
@@ -203,6 +204,16 @@ function onload(err, data) {
    */
 
     function newUpdate() {
+
+  selectYAxisRight = d3.select('.y.axis.axisRight')
+  .append('text')
+  .style('fill', 'orange')
+    .attr('y', 6)
+    .attr('dy', '-2em')
+    .attr('dx', '2em')
+    .style('text-anchor', 'end')
+    .text('Million (in euro)');
+
       var selectBars = bars.selectAll('.bar')
       .data(period).enter().selectAll('.bar2').style('fill','orange')
       .attr('x', function(d) { 

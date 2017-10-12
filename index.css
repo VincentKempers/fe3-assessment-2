@@ -1,36 +1,30 @@
 body {
   font: 10px sans-serif;
+  /*background-color: #0E101B;*/
 }
 
 .y.axisRight text {
     fill: black;
 }
+.y.axisRight .tick {
+  fill:white;
+}
+
 .y.axisLeft text {
-    fill: red;
+    fill: black;
 }
 
 .axis path,
 .axis line {
   fill: none;
-  stroke: #000;
+  stroke: white;
 }
 
-.bar1 {
-  fill: steelblue;
-}
-
-.bar2 {
-  fill: orange;
-}
-
-.bar3 {
-  fill: grey;
-}
 
 .x.axis path {
   display: none;
 }
 
 #active {
-  fill:red;
+  fill: red;
 }
